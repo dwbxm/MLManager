@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,10 +93,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView = (RecyclerView) findViewById(R.id.appList);
         pullToRefreshView = (PullToRefreshView) findViewById(R.id.pull_to_refresh);
         fastScroller = (VerticalRecyclerViewFastScroller) findViewById(R.id.fast_scroller);
-        progressWheel = (ProgressWheel) findViewById(R.id.progress);
+        progressWheel = (ProgressWheel) findViewById(R.id.progress); //旋转的小圈圈
         noResults = (LinearLayout) findViewById(R.id.noResults);
 
-        pullToRefreshView.setEnabled(false);
+        pullToRefreshView.setEnabled(false);  //下拉视图刷新
 
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -114,19 +115,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.app_name);
+            getSupportActionBar().setTitle("LBK");//set up 搜索条的标题
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(UtilsUI.darker(appPreferences.getPrimaryColorPref(), 0.8));
+            //getWindow().setStatusBarColor(UtilsUI.darker(appPreferences.getPrimaryColorPref(), 10));
             toolbar.setBackgroundColor(appPreferences.getPrimaryColorPref());
+            //toolbar.setBackgroundColor(0xff0000);
             if (!appPreferences.getNavigationBlackPref()) {
                 getWindow().setNavigationBarColor(appPreferences.getPrimaryColorPref());
             }
         }
     }
-
+    //获取已安装应用的列表
     class getInstalledApps extends AsyncTask<Void, String, Void> {
         private Integer totalApps;
         private Integer actualApps;
